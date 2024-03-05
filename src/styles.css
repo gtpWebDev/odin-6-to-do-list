@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Dancing';
+  src: url('./dancing.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+p {
+  color: red;
+}
+
+#fontCheck {
+  color: black;
+  font-size: 24px;
+  font-family: 'Dancing';
+}
