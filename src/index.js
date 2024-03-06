@@ -1,24 +1,22 @@
 import "./styles.css"
 import Icon from './icon.png';
-import { checkModuleBundling } from "../other.js";
+import { checkModuleBundling } from "./other.js";
 
-const main = document.querySelector("body")
-const jsLinkCheck = document.createElement("p")
-jsLinkCheck.textContent = "If this text shows and is red, js is linked and webpack is bundling css files"
-main.appendChild(jsLinkCheck)
+import { Task } from "./Task.js"
 
-const fontCheck = document.createElement("p")
-fontCheck.setAttribute("id","fontCheck")
-fontCheck.textContent = "If this text is fancy, webpack is successfully bundling fonts"
-main.appendChild(fontCheck)
+const newTask = new Task("Name", "Description", new Date(), "Top priority!");
 
-const domObject = checkModuleBundling();
-main.appendChild(domObject);
+console.table(newTask);
 
-const imageCheck = document.createElement("p")
-imageCheck.textContent = "If a heart shows below, webpack is bundling images"
-main.appendChild(imageCheck)
+console.log("Complete?", newTask.complete);
+newTask.toggleComplete();
+console.log("Complete?", newTask.complete);
 
-const myIcon = new Image();
-myIcon.src = Icon;
-main.appendChild(myIcon);
+
+
+console.log("Priority", newTask.priority); // uses the getter
+
+newTask.priority = "Do it later..."; // uses the setter
+
+console.log("Priority", newTask.priority);
+
