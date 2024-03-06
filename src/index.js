@@ -1,9 +1,11 @@
 import "./styles.css"
-import Icon from './icon.png';
+import { pageLoad } from "./generateDOM.js"
 import { checkModuleBundling } from "./other.js";
+//import { Task } from "./Task.js"
 
-import { Task } from "./Task.js"
+pageLoad();
 
+/*
 const newTask = new Task("Name", "Description", new Date(), "Top priority!");
 
 console.table(newTask);
@@ -19,4 +21,4 @@ console.log("Priority", newTask.priority); // uses the getter
 newTask.priority = "Do it later..."; // uses the setter
 
 console.log("Priority", newTask.priority);
-
+*/

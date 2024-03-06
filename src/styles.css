@@ -1,3 +1,33 @@
+
+:root {
+
+  --font-hierarchy: Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+  --backGroundColour: #ffffff; /* exclusive to backgrounds */
+  --borderColour: #000000; /* exclusive to borders */
+
+  --lightTextColour: #f8f1e4; /* for use on dark backgrounds */
+  --darkTextColour: #1f0000; /* for use on light backgrounds */
+
+  --lightestColour: #f9f7f3;
+  --midLightColour: #d1cf4b;
+  --midColour: #c1121f;
+  --midDarkColour: #218ae6;
+  --darkestColour: #003049;
+
+  --greenGood: rgb(0, 128, 0);
+  --redBad: rgb(247, 0, 0);
+
+
+  /* Main body max of 80% vw and 1500px, centred */
+  --maxContentWidth: 1500px;
+  --bodyWidth: min(var(--maxContentWidth),80vw);
+  --bodyMargin: max(calc(0.5*(100vw - var(--maxContentWidth))),10vw);
+
+  --tab-height: 50px;
+
+}
+
 @font-face {
   font-family: 'Dancing';
   src: url('./dancing.ttf');
@@ -6,11 +36,63 @@
 }
 
 p {
-  color: red;
+  margin: 0;
 }
 
-#fontCheck {
-  color: black;
-  font-size: 24px;
-  font-family: 'Dancing';
+body {
+  font-family: var(--font-hierarchy);
+  font-size: 18px;
+
+  width: var(--bodyWidth);
+
+  margin: 5vh var(--bodyMargin);
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 100px max(700px, calc(90vh - 100px)); /* top and bottom 5vh, but main panel minimum 700px */
 }
+
+#navbar {
+  grid-row: 1;
+  grid-column: 1 / 3;
+  background-color: var(--midLightColour);
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+#sidebar {
+  grid-row: 2;
+  grid-column: 1;
+  background-color: var(--lightestColour);
+  padding: 50px 30px;
+  display: grid;
+  row-gap: 40px;
+  align-content: start; /* contents go in top of container */ 
+  justify-content: stretch; /* stretch horizontally across whole container */
+}
+
+.sidebarItem {
+  display: grid;
+  grid-template-columns: 1fr auto; /* icon to right, name takes remainder of room */
+  align-items: center; /* children centred vertically */
+}
+
+.sidebarName {
+  align-items: start;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.sidebarIcon {
+  width: 30px;
+}
+
+#project-display {
+  grid-row: 2;
+  grid-column: 2;
+  background-color: var(--backGroundColour);
+}
+
+
+
