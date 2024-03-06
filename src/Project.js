@@ -4,8 +4,13 @@
 
 class Project {
 
-  constructor()
-
-
+  constructor(name, description) {
+    this.name = name;
+    this.description = description;
+  }
 
 }
+
+export {
+  Project
+};

@@ -94,5 +94,19 @@ body {
   background-color: var(--backGroundColour);
 }
 
+#project-panel {
+  background-color: yellow;;
+}
+
+#task-container {
+  background-color: green;
+  display: grid;
+  row-gap: 10px;
+}
+
+.indiv-task {
+  background-color: red;
+}
+
 
 
