@@ -1,16 +1,16 @@
+import { v4 as uuidv4 } from "uuid";
 
-/* The Project class is very simple. Tasks are associated with Projects
-*/
 
 class Project {
 
   constructor(name, description) {
     this.name = name;
     this.description = description;
+    this.projId = uuidv4()
   }
 
 }
 
 export {
-  Project
+  Project as default,
 };
