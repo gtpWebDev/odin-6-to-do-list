@@ -1,5 +1,5 @@
 
-import { projectGeneral } from "./projectAndTaskData.js";
+import { defaultProject } from "./projectAndTaskData.js";
 import Project from "./Project.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -23,7 +23,7 @@ class Task {
     this.priority = priority;
     this.taskId = uuidv4()
     this.complete = false;
-    this.project = projectGeneral;
+    this.project = defaultProject;
   }
 
   toggleComplete() {
