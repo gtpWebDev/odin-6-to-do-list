@@ -114,7 +114,7 @@ body {
 #select-proj-container {
   grid-row: 2;
   display: grid;
-  row-gap: 20px;
+  row-gap: 10px;
   grid-template-rows: repeat(2, auto);
 }
 
@@ -209,5 +209,74 @@ body {
   font-style: italic;
 }
 
+
+/* Project modal styles below */
+
+/* Default for the modal until it is required */
+#add-project-dialog-no-display {
+  display: none
+}
+
+/* styling for modal, the displa: grid makes it visible, so important to closely control this */
+#add-project-dialog {
+  
+  background-color: var(--midDarkColour);
+  padding: 40px 30px;
+  gap: 30px;
+  border: 2px solid black;
+  border-radius: 20px;
+  color: var(--lightTextColour);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  margin-left: auto;
+  margin-top: 20vh;
+  
+}
+
+dialog::backdrop {
+background-color: rgb(10, 10, 11);
+opacity: 0.85;
+}
+
+#add-project-form {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 30px;
+  place-items: center;
+}
+
+#form-inputs {
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: repeat(4,1fr);
+  grid-template-columns: auto 1fr;
+  row-gap: 20px;
+  column-gap: 20px;;
+  justify-items: left;
+}
+
+#form-buttons {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+/* #add-book-form-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
+} */
+
+#add-project-submit, #add-project-cancel {
+  place-self: center;
+  background-color: var(--darkestColour);
+  color: var(--lightTextColour);
+  border: none;
+  border-radius: 15px;
+  padding: 5px 30px;
+  font-size: 18px;
+}
 
 

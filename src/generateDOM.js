@@ -7,11 +7,15 @@ import TickIcon from "./check.svg"
 import { userTasks, defaultProject, userProjects } from "./projectAndTaskData.js";
 import { friendlyDate } from "./displayFunctions.js";
 import { priorityBackground } from "./displayFunctions.js";
+import { loadProjectDialog, loadTaskDialog } from "./formsDOM.js"
 
 
 
 function pageLoad() {
 
+  // must maintain sequence, modal forms first
+  loadProjectDialog(); 
+  loadTaskDialog();
   loadSideBar();
   loadProjectDisplay(defaultProject);
 
@@ -22,23 +26,19 @@ function pageLoad() {
 function loadSideBar() {
 
   const sidebar = document.querySelector("#sidebar");
+  sidebar.innerHTML = "";
   
-  const addProjContainer = document.createElement("div");
-  addProjContainer.setAttribute("id","add-project-container");
-
-  const addProjName = document.createElement("p");
-  addProjName.setAttribute("id","add-proj-name");
-  addProjName.textContent = "Add Project";
-
-  const addProjIcon = document.createElement("img");
-  addProjIcon.setAttribute("id","add-proj-icon");
-  addProjIcon.setAttribute("src",NotePlusIcon);
-  
-  addProjContainer.appendChild(addProjName);
-  addProjContainer.appendChild(addProjIcon);
-
+  const addProjContainer = constructProjectAddContainer();
   sidebar.appendChild(addProjContainer);
 
+  const selectProjContainer = constructProjectSelectContainer();
+  sidebar.appendChild(selectProjContainer);
+
+}
+
+
+
+function constructProjectSelectContainer() {
 
   const selectProjContainer = document.createElement("div");
   selectProjContainer.setAttribute("id","select-proj-container");
@@ -54,8 +54,37 @@ function loadSideBar() {
   selectProjContainer.appendChild(selectProjName);
   selectProjContainer.appendChild(selectProjItem);
 
-  sidebar.appendChild(selectProjContainer);
+  return selectProjContainer;
 
+}
+
+
+
+function constructProjectAddContainer() {
+
+  const addProjContainer = document.createElement("div");
+  addProjContainer.setAttribute("id","add-project-container");
+
+  const addProjName = document.createElement("p");
+  addProjName.setAttribute("id","add-proj-name");
+  addProjName.textContent = "Add Project";
+
+  const addProjIcon = document.createElement("img");
+  addProjIcon.setAttribute("id","add-proj-icon");
+  addProjIcon.setAttribute("src",NotePlusIcon);
+
+  // create listener to open project modal form
+  const addBookDialog = document.querySelector("#add-project-dialog-no-display")
+  addProjIcon.addEventListener("click", () => {
+    addBookDialog.showModal()
+    // The css for this id removes display: none, so styling has to be applied after showModal
+    addBookDialog.setAttribute("id","add-project-dialog")
+  })
+  
+  addProjContainer.appendChild(addProjName);
+  addProjContainer.appendChild(addProjIcon);
+
+  return addProjContainer
 
 }
 
@@ -84,35 +113,6 @@ function constructProjectSelector() {
   )
 
   return projectSelector
-
-}
-
-
-
-
-
-
-
-
-
-
-function constructSidebarItem(text,imageUrl) {
-  
-  const sidebarItem = document.createElement("div");
-  sidebarItem.setAttribute("class","sidebarItem");
-
-  const sidebarName = document.createElement("p");
-  sidebarName.setAttribute("class","sidebarName");
-  sidebarName.textContent = text;
-
-  const sidebarIcon = document.createElement("img");
-  sidebarIcon.setAttribute("class","sidebarIcon");
-  sidebarIcon.setAttribute("src",imageUrl);
-  
-  sidebarItem.appendChild(sidebarName);
-  sidebarItem.appendChild(sidebarIcon);
-
-  return sidebarItem;
 
 }
 
@@ -201,70 +201,7 @@ function loadProjectDisplay(selectedProject) {
 
 
 
-
-
-// function loadMainContainer(projectArray, taskArray) {
-
-//   // Creates the project selector and project display
-//   // Apply filter for default "general" project
-
-//   const mainContainer = document.querySelector("#main-container");
-
-//   const projectSelectorContainer = document.createElement("div");
-//   projectSelectorContainer.setAttribute("id","project-selector-container");
-//   const projectSelectorLabel = document.createElement("p");
-//   projectSelectorLabel.textContent = "Please select a project: ";
-//   projectSelectorLabel.setAttribute("id","project-selector-text");
-//   projectSelectorContainer.appendChild(projectSelectorLabel)
-
-//   const projectSelectorInput = constructProjectSelector(projectArray, taskArray);
-//   projectSelectorContainer.appendChild(projectSelectorInput);
-
-//   mainContainer.appendChild(projectSelectorContainer);
-
-//   const projectDisplay = document.createElement("div");
-//   projectDisplay.setAttribute("id","project-display");
-//   mainContainer.appendChild(projectDisplay);
-
-//   const defaultProjId = defaultProject.projId
-//   const filteredTasks = applyProjFilter(defaultProjId, taskArray);
-//   loadProjectDisplay(defaultProjId, filteredTasks)
-
-// }
-
-
-// function constructProjectSelector(projectArray, taskArray) {
-
-//   const projectSelector = document.createElement("select")
-
-//   let optionList = projectSelector.options
-  
-//   projectArray.forEach(project => {
-//     optionList.add( new Option(project.name, project.projId) )
-//   })
-  
-//   projectSelector.setAttribute("id","project-selector-select");
-
-//   projectSelector.addEventListener(
-//     "change",
-//     (event) => {
-//       const filteredTasks = applyProjFilter(event.target.value, taskArray)
-//       loadProjectDisplay(event.target.value, filteredTasks)
-//     }
-//   )
-
-//   return projectSelector
-
-// }
-
-
-
-
-
-
-
-
-
 export {
   pageLoad,
+  loadSideBar
 };

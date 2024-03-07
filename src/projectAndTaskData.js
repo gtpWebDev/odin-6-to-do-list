@@ -51,7 +51,11 @@ const userTasks = (function() {
   function initialiseTaskData() {
 
     // general
-    const taskShop = new Task(`Weekly shopping`, `Don't forget bread, milk and sugar`, add(new Date(), {days: 5}), "Top priority!");
+    const taskShop = new Task(`Weekly shopping`, `Don't forget bread, milk and sugar`, add(new Date(), {days: 5}), "Fairly important");
+    taskShop.project = defaultProject;
+    const taskToDo = new Task(`To Do Project`, `Finish the Odin Project To Do project`, add(new Date(), {days: 8}), "Top priority!");
+    taskShop.project = defaultProject;
+    const taskWebsite = new Task(`Personal Website`, `Develop personal website to help advertise my capabilities to potential employers.`, add(new Date(), {days: 30}), "Do it later...");
     taskShop.project = defaultProject;
   
     // misc.
@@ -74,6 +78,8 @@ const userTasks = (function() {
   
     return [
       taskShop,
+      taskToDo,
+      taskWebsite,
       taskDryCleaners,
       taskOdin,
       taskFixFence,
