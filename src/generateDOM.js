@@ -3,10 +3,12 @@ import PlusIcon from "./plus.svg"
 import DeleteIcon from "./delete.svg"
 import EditIcon from "./edit.svg"
 import TickIcon from "./check.svg"
+import CrossIcon from "./close.svg"
+
 
 import { userTasks, defaultProject, userProjects } from "./projectAndTaskData.js";
 import { friendlyDate } from "./displayFunctions.js";
-import { priorityBackground } from "./displayFunctions.js";
+import { priorityClassType } from "./displayFunctions.js";
 import { loadProjectDialog, loadTaskDialog } from "./formsDOM.js"
 
 
@@ -66,19 +68,19 @@ function constructProjectAddContainer() {
   addProjContainer.setAttribute("id","add-project-container");
 
   const addProjName = document.createElement("p");
-  addProjName.setAttribute("id","add-proj-name");
+  addProjName.setAttribute("class","add-button-name");
   addProjName.textContent = "Add Project";
 
   const addProjIcon = document.createElement("img");
-  addProjIcon.setAttribute("id","add-proj-icon");
+  addProjIcon.setAttribute("class","add-button-icon");
   addProjIcon.setAttribute("src",NotePlusIcon);
 
   // create listener to open project modal form
-  const addBookDialog = document.querySelector("#add-project-dialog-no-display")
+  const addProjectDialog = document.querySelector("#project-dialog")
   addProjIcon.addEventListener("click", () => {
-    addBookDialog.showModal()
+    addProjectDialog.showModal()
     // The css for this id removes display: none, so styling has to be applied after showModal
-    addBookDialog.setAttribute("id","add-project-dialog")
+    addProjectDialog.setAttribute("class","dialog-display")
   })
   
   addProjContainer.appendChild(addProjName);
@@ -117,7 +119,6 @@ function constructProjectSelector() {
 }
 
 
-
 function collectProjectTasks (project) {
 
   return userTasks.getTaskArray().filter( elem => 
@@ -138,15 +139,15 @@ function loadProjectDisplay(selectedProject) {
 
   let taskCardDOM = (projectTasks.map((element) => {
     return `
-      <div class="indiv-task" style="background-color:${priorityBackground(element.priority)}">
-        <div>
+      <div class="indiv-task" ${element.complete ? 'id="indiv-task-complete"' : 'id="indiv-task-not-complete"'}>
+        <div class="indiv-task-text-container">
           <div class="indiv-task-name">${element.name}</div>
-          <div class="indiv-task-description">- ${element.description}</div>
-          <div>${friendlyDate(element.dueDate)}</div>
-          <div>${element.complete}</div>
+          <div class="indiv-task-description">${element.description}</div>
+          <div class="indiv-task-due-date">${friendlyDate(element.dueDate)}</div>
+          <div class="${priorityClassType(element.priority)}">${element.priority}</div>
         </div>
         <div class="indiv-task-icon-container">
-          <img id="toggle-complete-${element.taskId}" data-task-id=${element.taskId} class="indiv-task-icon-img" src="${TickIcon}">
+          <img id="toggle-complete-${element.taskId}" data-task-id=${element.taskId} class="indiv-task-icon-img" src="${element.complete ? CrossIcon: TickIcon}">
           <img id="edit-${element.taskId}" data-task-id=${element.taskId} class="indiv-task-icon-img" src="${EditIcon}">
           <img id="delete-${element.taskId}" data-task-id=${element.taskId} class="indiv-task-icon-img" src="${DeleteIcon}">
         </div>
@@ -156,7 +157,11 @@ function loadProjectDisplay(selectedProject) {
 
   let constructedDOM = `
     <h2 id="project-title">Project: ${selectedProject.name}</h2>
-    <p id="project-description">- ${selectedProject.description}</p>
+    <p id="project-description">${selectedProject.description}</p>
+    <div id="add-task-container">
+      <p class="add-button-name">Add Task</p>
+      <img class="add-button-icon" id="add-task-icon" data-project-id=${selectedProject.projId} src=${PlusIcon}>
+    </div>
     <div id="project-panel">
       <div id="task-container">
         ${taskCardDOM}
@@ -166,6 +171,16 @@ function loadProjectDisplay(selectedProject) {
   
   projDisplay.innerHTML = constructedDOM;
 
+
+  // create listener to open project modal form
+  const addTaskIcon = document.querySelector("#add-task-icon")
+  const addTaskDialog = document.querySelector("#task-dialog")
+  addTaskIcon.addEventListener("click", () => {
+    addTaskDialog.showModal()
+    // The css for this id removes display: none, so styling has to be applied after showModal
+    addTaskDialog.setAttribute("class","dialog-display")
+  })
+    
   // add event listeners to created task cards
   projectTasks.forEach((element) => {
 
@@ -194,14 +209,8 @@ function loadProjectDisplay(selectedProject) {
 }
 
 
-
-
-
-
-
-
-
 export {
   pageLoad,
-  loadSideBar
+  loadSideBar,
+  loadProjectDisplay
 };

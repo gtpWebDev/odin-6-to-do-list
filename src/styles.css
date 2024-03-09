@@ -7,20 +7,18 @@
   --borderColour: #000000; /* exclusive to borders */
 
   --lightTextColour: #f8f1e4; /* for use on dark backgrounds */
-  --darkTextColour: #1f0000; /* for use on light backgrounds */
+  
 
-
-
-  --lightColour: rgb(235, 235, 255);
+  /* --lightColour: rgb(235, 235, 255); */
   --lightestColour: rgb(240,240,255);
-  --midLightColour: #d1cf4b;
-  --midColour: #c1121f;
-  --midDarkColour: #218ae6;
+  --incompleteTask: rgb(210, 182, 214);
+  --completeTask: rgb(233, 220, 235);
+  --midDarkColour: rgb(90, 147, 197);
   --darkestColour: #003049;
 
-  --greenGood: rgb(166, 221, 166);
-  --amberOK: rgb(180, 204, 104);
-  --redBad: rgb(211, 122, 122);
+  --lowPrio: rgb(17, 227, 17);
+  --midPrio: rgb(236, 192, 15);
+  --highPrio: rgb(219, 14, 14);
 
 
   /* Main body max of 80% vw and 1500px, centred */
@@ -50,27 +48,30 @@ optgroup {
 body {
   font-family: var(--font-hierarchy);
   font-size: 18px;
+}
 
-  background-color: var(--lightestColour);
-
+#main-container {
   width: var(--bodyWidth);
 
   margin: 5vh var(--bodyMargin);
   display: grid;
   grid-template-columns: 250px 1fr;
-  grid-template-rows: 100px max(700px, calc(90vh - 100px)); /* top and bottom 5vh, but main panel minimum 700px */
+  grid-template-rows: 100px auto max(1fr, calc(90vh - 100px));
+  /* grid-template-rows: 100px max(700px, calc(90vh - 100px)); top and bottom 5vh, but main panel minimum 700px */
   column-gap: 30px;
   row-gap: 50px;
 }
 
+
 #navbar {
   grid-row: 1;
   grid-column: 1 / 3;
-  /* background-color: var(--midDarkColour); */
+  background-color: var(--midDarkColour);
+  box-shadow: 0px 6px 20px rgb(33, 102, 163);
 
   color: var(--lightTextColour);
 
-  background-color: rgb(90, 147, 197);
+  /* background-color: rgb(90, 147, 197); */
   box-shadow: 0px 6px 20px rgb(33, 102, 163);
 
   display: grid;
@@ -95,19 +96,22 @@ body {
 }
 
 #add-project-container {
-  grid-row: 1;
   display: grid;
   grid-template-columns: 1fr auto; /* icon to right, name takes remainder of room */
   align-items: center; /* children centred vertically */
 }
 
-#add-proj-name, #select-proj-name {
+#add-project-container {
+  grid-row: 1;
+}
+
+.add-button-name, #select-proj-name {
   align-items: start;
   font-size: 24px;
   font-weight: 800;
 }
 
-#add-proj-icon, .indiv-task-icon-img {
+.add-button-icon, .indiv-task-icon-img {
   width: 30px;
 }
 
@@ -126,15 +130,6 @@ body {
   grid-row: 2;
 }
 
-
-#main-container {
-  grid-row: 2;
-  grid-column: 2;
-  display: grid;
-  row-gap: 30px;
-  grid-template-rows: repeat(2, auto);
-  align-content: start;
-}
 
 #project-selector-container {
   display: grid;
@@ -161,10 +156,14 @@ body {
 
 
 #project-display {
+  grid-row: 2 / 4;
   background-color: var(--lightColour);
   box-shadow: 0px 6px 20px rgb(220, 211, 235);
   /* border-radius: 20px; */
   padding: 20px 30px;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+
 }
 
 #project-title {
@@ -176,21 +175,102 @@ body {
   font-weight: 400;
   margin-bottom: 30px;
   padding: 0 20px;
+  height: min(auto, 3.5em);
 }
+
+#add-task-container {
+  padding-bottom: 30px;
+  display: grid;
+  column-gap: 10px;
+  justify-content: start;
+  grid-template-columns: repeat(2, auto); /* icon to right, name takes remainder of room */
+  align-items: center; /* children centred vertically */
+}
+
+
+
 
 #task-container {
   display: grid;
   row-gap: 20px;
+  overflow: auto;
 }
 
+#indiv-task-complete { /* overrides indiv-task through specificity */
+  text-decoration: line-through;
+  background-color: lightgrey;
+  background-color: var(--completeTask);
+}
+#indiv-task-not-complete { /* overrides indiv-task through specificity */
+  text-decoration: none;
+}
+
+
+
 .indiv-task {
+  
+  background-color: var(--incompleteTask);
+  font-size: 20px;
   padding: 10px 20px;
   display: grid;
   grid-template-columns: 1fr auto;
-  column-gap: 10px;
+  column-gap: 30px;
   border-left: 10px solid orange;
 
   border-radius: 10px;
+}
+
+.indiv-task-text-container {
+  display: grid;
+  row-gap: 10px;
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: 1fr auto;
+}
+
+.indiv-task-name {
+  grid-row: 1;
+  grid-column: 1 / 3;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.indiv-task-description {
+  grid-row: 2;
+  grid-column: 1 / 3;
+  font-style: italic;
+  height: 3.5em; /* 3 lines */
+  place-items: start;
+  padding: 0 20px;
+}
+
+.indiv-task-due-date {
+  grid-row: 3;
+  grid-column: 1;
+}
+
+.indiv-task-priority-low, .indiv-task-priority-mid, .indiv-task-priority-high {
+  grid-row: 3;
+  grid-column: 2;
+}
+
+.indiv-task-priority-low {
+  color: var(--lowPrio);
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: rgb(1, 31, 4);
+  font-style: italic;
+}
+.indiv-task-priority-mid {
+  color: var(--midPrio);
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: rgb(81, 60, 8);
+  font-style: italic;
+}
+.indiv-task-priority-high {
+  color: var(--highPrio);
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: rgb(27, 2, 2);
+  font-style: italic;
+
 }
 
 .indiv-task-icon-container {
@@ -198,27 +278,18 @@ body {
   grid-template-rows: repeat(3, 1fr);
   row-gap: 10px;
   align-content: end;
-
+  align-items: center;
 }
-
-.indiv-task-name {
-  font-weight: 800;
-}
-
-.indiv-task-description {
-  font-style: italic;
-}
-
 
 /* Project modal styles below */
 
 /* Default for the modal until it is required */
-#add-project-dialog-no-display {
+.dialog-no-display {
   display: none
 }
 
 /* styling for modal, the displa: grid makes it visible, so important to closely control this */
-#add-project-dialog {
+.dialog-display {
   
   background-color: var(--midDarkColour);
   padding: 40px 30px;
@@ -238,14 +309,14 @@ background-color: rgb(10, 10, 11);
 opacity: 0.85;
 }
 
-#add-project-form {
+#add-project-form, #add-task-form {
   display: grid;
   grid-template-rows: auto auto;
   gap: 30px;
   place-items: center;
 }
 
-#form-inputs {
+#project-form-inputs, #task-form-inputs {
   grid-row: 1;
   display: grid;
   grid-template-rows: repeat(4,1fr);
@@ -269,7 +340,7 @@ opacity: 0.85;
 
 } */
 
-#add-project-submit, #add-project-cancel {
+.form-button {
   place-self: center;
   background-color: var(--darkestColour);
   color: var(--lightTextColour);

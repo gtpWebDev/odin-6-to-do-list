@@ -1,17 +1,21 @@
-import Project from "./Project.js"
-import { userProjects } from "./projectAndTaskData.js"
-import { loadSideBar } from "./generateDOM.js"
+import Project from "./Project.js";
+import Task, { prioOptions } from "./Task.js";
+import { userProjects } from "./projectAndTaskData.js";
+import { userTasks } from "./projectAndTaskData.js";
+import { loadSideBar, loadProjectDisplay } from "./generateDOM.js";
+
+
 
 function loadProjectDialog() {
 
-  const addProjectDialogLoc = document.querySelector("#project-dialog-loc")
+  const addProjectDialogLoc = document.querySelector("#dialog-project-loc");
 
   const constructedDOM = `
-    <dialog id="add-project-dialog-no-display">
+    <dialog class="dialog-no-display" id="project-dialog">
       <h2>Please provide the project details...</h2>
       <!-- method dialog necessary when form located in a dialog -->
       <form id="add-project-form" action="" method="dialog">
-        <div id="form-inputs">
+        <div id="project-form-inputs">
           <label class="form-label" for="project-name">Project Name:</label>
           <input id="form-project-name" class="form-input" type="text" name="project-name" placeholder="e.g. House Chores" required>
           <label class="form-label" for="project-desc">Project Description:</label>
@@ -33,8 +37,8 @@ function loadProjectDialog() {
     // prevent usual behaviour of form submit to send information to a server
     event.preventDefault();
     // return the modal to display: none
-    const addProjectDialog = document.querySelector("#add-project-dialog")
-    addProjectDialog.setAttribute("id","add-project-dialog-no-display")
+    const addProjectDialog = document.querySelector("#project-dialog")
+    addProjectDialog.setAttribute("class","dialog-no-display")
     addProjectDialog.close();
   })
 
@@ -49,9 +53,8 @@ function loadProjectDialog() {
     userProjects.addToProjectArray(newProject);
     console.table(userProjects.getProjectArray())
     resetProjectForm()
-    const addProjectDialog = document.querySelector("#add-project-dialog")
-    addProjectDialog.setAttribute("id","add-project-dialog-no-display")
-    //addProjectDialog.removeAttribute("id","add-project-dialog")
+    const addProjectDialog = document.querySelector("#project-dialog")
+    addProjectDialog.setAttribute("class","dialog-no-display")
     addProjectDialog.close();
     loadSideBar()
 
@@ -68,69 +71,103 @@ function resetProjectForm() {
 
 function loadTaskDialog() {
 
-  const pageBody = document.querySelector("#task-dialog-loc")
+
+  const addTaskDialogLoc = document.querySelector("#dialog-task-loc")
 
   const constructedDOM = `
-    <dialog id="add-project-dialog-no-display">
-      <h2>Please provide the project details...</h2>
+    <dialog class="dialog-no-display" id="task-dialog">
+      <h2>Please provide the task details...</h2>
       <!-- method dialog necessary when form located in a dialog -->
-      <form id="add-project-form" action="" method="dialog">
-        <div id="form-inputs">
-          <label class="form-label" for="project-name">Project Name:</label>
-          <input class="form-input" type="text" name="project-name" placeholder="e.g. House Chores" required>
-          <label class="form-label" for="project-desc">Project Description:</label>
-          <input class="form-input" type="text" name="project-desc" placeholder="more details here..." required>
-
-
-          <label class="form-label" for="book-author">Author:</label>
-          <input class="form-input" type="text" id="form-book-author" name="book-author" placeholder="J R R Tolkein" required>
-          <label class="form-label" for="book-read-or-not">Read this yet?</label>
-          <input class="form-input" type="checkbox" id="form-book-read-or-not" name="book-read-or-not">
-          <label class="form-label" for="book-synopsis">Synopsis:</label>
-          <input class="form-input" type="text" id="form-book-synopsis" name="book-synopsis">
+      <form id="add-task-form" action="" method="dialog">
+        <div id="task-form-inputs">
+          <label class="form-label" for="task-name">Task Name:</label>
+          <input id="form-task-name" class="form-input" type="text" name="task-name" placeholder="e.g. House Chores" required>
+          <label class="form-label" for="task-desc">Task Description:</label>
+          <input id="form-task-desc" class="form-input" type="text" name="task-desc" placeholder="more details here..." required>
+          <label class="form-label" for="task-date">Due Date</label>
+          <input id="form-task-date" class="form-input" type="date" name="task-date" placeholder="J R R Tolkein" required>
+          <label class="form-label" for="task-priority">Priority</label>
         </div>
         <div id="form-buttons">
-          <button id="add-project-submit" class="form-button" type="submit">Submit</button>
-          <button id="add-project-cancel" class="form-button" type="cancel" autofocus>Cancel</button>
+          <button id="add-task-submit" class="form-button" type="submit">Submit</button>
+          <button id="add-task-cancel" class="form-button" type="cancel" autofocus>Cancel</button>
         </div>
       </form>
     </dialog>
   `
-  pageBody.innerHTML = constructedDOM;
+  addTaskDialogLoc.innerHTML = constructedDOM;
+
+  const formInputs = document.querySelector("#task-form-inputs");
+  formInputs.appendChild(constructPrioritySelector());
+  
+
+  // Add submit and cancel buttons on the modal dialog
+
+  let addTaskCancel = document.querySelector("#add-task-cancel")
+  addTaskCancel.addEventListener("click", (event) => {
+    // prevent usual behaviour of form submit to send information to a server
+    event.preventDefault();
+    // return the modal to display: none
+    const addTaskDialog = document.querySelector("#task-dialog")
+    addTaskDialog.setAttribute("class","dialog-no-display")
+    addTaskDialog.close();
+  })
 
 
 
-  // // Add button functionality  - add button, then submit and cancel on the modal dialog
+  let addTaskForm = document.querySelector("#add-task-form")
+  addTaskForm.addEventListener("submit", (event) => {
+    // prevent usual behaviour of form submit to send information to a server
+    event.preventDefault();
 
-  // let addBookCancel = document.querySelector("#add-book-cancel")
-  // addBookCancel.addEventListener("click", (event) => {
-  //   // prevent usual behaviour of form submit to send information to a server
-  //   event.preventDefault();
-  //   // return the modal to display: none
-  //   addBookDialog.setAttribute("id","add-book-dialog-no-display")
-  //   addBookDialog.close();
-  //   addBookButton.focus();
-  // })
+    const newTask = new Task(
+      document.querySelector("#form-task-name").value,
+      document.querySelector("#form-task-desc").value,
+      document.querySelector("#form-task-date").value,
+      document.querySelector("#form-task-priority").value
+    )
 
-  // let addBookForm = document.querySelector("#add-book-form")
-  // addBookForm.addEventListener("submit", (event) => {
-  //   // prevent usual behaviour of form submit to send information to a server
-  //   event.preventDefault();
-  //   addBookToLibrary(
-  //     document.querySelector("#form-book-name").value,
-  //     document.querySelector("#form-book-author").value,
-  //     document.querySelector("#form-book-read-or-not").checked,
-  //     document.querySelector("#form-book-synopsis").value,
-  //   )
-  //   resetForm()
-  //   addBookDialog.removeAttribute("id","add-book-dialog")
-  //   addBookDialog.close();
-  //   addBookButton.focus();
-  //   displayBooksWithMap()
-  // })
+    const addTaskIcon = document.querySelector("#add-task-icon");
+    const currentProject = userProjects.getProjectById(addTaskIcon.dataset.projectId);
+    newTask.project = currentProject;
+
+    userTasks.addToTaskArray(newTask);
+    console.table(userProjects.getProjectArray())
+    resetTaskForm()
+    const addTaskDialog = document.querySelector("#task-dialog")
+    addTaskDialog.setAttribute("class","dialog-no-display")
+    addTaskDialog.close();
+    loadProjectDisplay(currentProject);
+
+  })
 
 }
 
+
+function constructPrioritySelector() {
+
+  const projectSelector = document.createElement("select")
+
+  let optionList = projectSelector.options
+  
+  prioOptions.forEach(prio => {
+    optionList.add( new Option(prio, prio) )
+  })
+  
+  projectSelector.setAttribute("id","form-task-priority");
+  projectSelector.setAttribute("name","task-priority");
+
+  return projectSelector
+
+}
+
+
+function resetTaskForm() {
+  document.querySelector("#form-task-name").value = "";
+  document.querySelector("#form-task-desc").value = "";
+  document.querySelector("#form-task-date").value,
+  document.querySelector("#form-task-priority").value
+}
 
 
 export {

@@ -2,9 +2,8 @@ import Task from "./Task"
 import Project from "./Project"
 import { add } from "date-fns"
 
-const defaultProject = new Project("General", "This is a general catch-all project which will show by default.");
+const defaultProject = new Project("Odin-6: To Do List", "Tasks to complete this To Do List tool.");
 const projectDIY = new Project(`DIY jobs`, `Jobs around the house`);
-const projectWork = new Project(`Work things`, `Related to my job`);
 const projectMisc = new Project(`Miscellaneous`, `Lots of random tasks...`);
 
 
@@ -15,7 +14,6 @@ const userProjects = (function() {
     return [
       defaultProject,
       projectDIY,
-      projectWork,
       projectMisc
     ]
   
@@ -25,11 +23,7 @@ const userProjects = (function() {
 
   const getProjectArray = () => projectArray;
 
-  const addToProjectArray = (newProject) => {
-
-    projectArray.push(newProject)
-
-  }
+  const addToProjectArray = (newProject) => projectArray.push(newProject)
 
   const getProjectById = (id) => {
     
@@ -50,49 +44,41 @@ const userTasks = (function() {
 
   function initialiseTaskData() {
 
-    // general
-    const taskShop = new Task(`Weekly shopping`, `Don't forget bread, milk and sugar`, add(new Date(), {days: 5}), "Fairly important");
-    taskShop.project = defaultProject;
-    const taskToDo = new Task(`To Do Project`, `Finish the Odin Project To Do project`, add(new Date(), {days: 8}), "Top priority!");
-    taskShop.project = defaultProject;
-    const taskWebsite = new Task(`Personal Website`, `Develop personal website to help advertise my capabilities to potential employers.`, add(new Date(), {days: 30}), "Do it later...");
-    taskShop.project = defaultProject;
-  
-    // misc.
-    const taskDryCleaners = new Task(`Dry cleaners`, `Pick up suit from dry cleaner`, add(new Date(), {days: 3}), "Fairly important");
-    taskDryCleaners.project = projectMisc;
-    const taskPayWindows = new Task(`Pay window cleaner`, `£8.00 on Wednesday`, add(new Date(), {days: 0}), "Do it later...");
-    taskPayWindows.project = projectMisc;
-  
-    // work
-    const taskOdin = new Task(`Odin javascript module`, `Finish module on classes`, add(new Date(), {days: 2}), "Top priority!");
-    taskOdin.project = projectWork;
-    const taskApply = new Task(`Apply for jobs`, `Search web dev jobs on job sites`, add(new Date(), {days: 2}), "Top priority!");
-    taskApply.project = projectWork;
-  
-    // diy
-    const taskFixFence = new Task(`Fix fence`, `Buy a new fence panel, concrete,  and fix it!`, add(new Date(), {days: 8}), "Fairly important");
-    taskFixFence.project = projectDIY;
-    const taskPaintGate = new Task(`Paint gate`, `Buy black and gold paint, paint the fence.`, add(new Date(), {days: 8}), "Fairly important");
-    taskPaintGate.project = projectDIY;
-  
-    return [
-      taskShop,
-      taskToDo,
-      taskWebsite,
-      taskDryCleaners,
-      taskOdin,
-      taskFixFence,
-      taskPayWindows,
-      taskApply,
-      taskPaintGate
-    ]
+    function createTask(name, desc, dueDate, priority, project) {
+      const task = new Task(name, desc, dueDate, priority);
+      task.project = project;
+      if (name === "Format complete tasks") { task.toggleComplete()}
+      if (name === "Card design") { task.toggleComplete()}
+      return task
+    }
+
+    let taskArray = [];
+
+    // default project - to do list improvements
+    taskArray.push(createTask(`Edit task`, `Add edit task functionality, currently the button isn't active.`, add(new Date(), {days: 1}), "Top priority!", defaultProject));
+    taskArray.push(createTask(`Tidy up generateDOM module`, `Needs tidying up, focussing on single responsibility principle in particular.`, add(new Date(), {days: 1}), "Top priority!", defaultProject));
+    taskArray.push(createTask("Format complete tasks", "When a task is incomplete, strike out all the text on the cards", add(new Date(), {days: 3}), "Top priority!", defaultProject));
+    taskArray.push(createTask(`Form validation`, `Add validatoin on text in particular to avoid task description being too long.`, add(new Date(), {days: 1}), "Fairly important", defaultProject));
+    taskArray.push(createTask(`Task sorting`, `Sort task by ascending due date, and possibly add an option to sort by priority.`, add(new Date(), {days: 1}), "Fairly important", defaultProject));
+    taskArray.push(createTask("Show complete tasks option", "Add an option to the project display to show complete tasks or not", add(new Date(), {days: 4}), "Do it later...", defaultProject));
+    taskArray.push(createTask(`Back-end database`, `When I've covered this part of the Odin Project course, add a back-end, likely using MongoDb, to manage the projects and the tasks.`, add(new Date(), {days: 1}), "Do it later...", defaultProject));
+
+    taskArray.push(createTask(`Dry cleaners`, `Pick up suit from dry cleaner`, add(new Date(), {days: 3}), "Top priority!", projectMisc));
+    taskArray.push(createTask(`Pay window cleaner`, `£8.00 on Wednesday`, add(new Date(), {days: 3}), "Top priority!", projectMisc));
+    taskArray.push(createTask(`Weekly shopping`, `Don't forget bread, milk and sugar`, add(new Date(), {days: 3}), "Top priority!", projectMisc));
+
+    taskArray.push(createTask(`Fix fence`, `Buy a new fence panel, concrete,  and fix it!`, add(new Date(), {days: 3}), "Top priority!", projectDIY));
+    taskArray.push(createTask(`Paint gate`, `Buy black and gold paint, paint the fence.`, add(new Date(), {days: 3}), "Top priority!", projectDIY));
+
+    return taskArray;
   
   }
 
   let taskArray = initialiseTaskData()
 
   const getTaskArray = () => taskArray;
+
+  const addToTaskArray = (newTask) => taskArray.push(newTask)
 
   const deleteById = (id) => {
     const taskIndex = taskArray.findIndex((element) => element.taskId === id);
@@ -101,7 +87,7 @@ const userTasks = (function() {
   }
 
 
-  return { getTaskArray, deleteById }
+  return { getTaskArray, addToTaskArray, deleteById }
 
 })()
 

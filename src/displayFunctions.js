@@ -9,19 +9,19 @@ function friendlyDate(inputDate) {
 }
 
 
-function priorityBackground(taskPriority) {
+function priorityClassType(taskPriority) {
 
   if (prioOptions.includes(taskPriority)) {
 
     switch (taskPriority) {
       case "Top priority!":
-        return "#ffcccc";
+        return "indiv-task-priority-high";
 
       case "Fairly important":
-        return "#ffffcc";
+        return "indiv-task-priority-mid";
 
       case "Do it later...":
-        return "#ccffcc";
+        return "indiv-task-priority-low";
    
     }
   } else {
@@ -33,5 +33,5 @@ function priorityBackground(taskPriority) {
 
 export {
   friendlyDate,
-  priorityBackground
+  priorityClassType
 };
