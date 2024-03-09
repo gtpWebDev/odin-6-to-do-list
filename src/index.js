@@ -1,24 +1,19 @@
 import "./styles.css"
-import { pageLoad } from "./generateDOM.js"
-import { checkModuleBundling } from "./other.js";
-//import { Task } from "./Task.js"
-
-pageLoad();
-
-/*
-const newTask = new Task("Name", "Description", new Date(), "Top priority!");
-
-console.table(newTask);
-
-console.log("Complete?", newTask.complete);
-newTask.toggleComplete();
-console.log("Complete?", newTask.complete);
+import { loadProjectDialog, loadTaskDialog } from "./formsDOM.js"
+import { defaultProject } from "./projectAndTaskData.js";
+import { loadProjectDisplay, loadSideBar} from "./generateDOM.js";
 
 
 
-console.log("Priority", newTask.priority); // uses the getter
+const pageLoad = (() => {
 
-newTask.priority = "Do it later..."; // uses the setter
+  loadProjectDialog(); 
+  loadTaskDialog();
+  loadSideBar();
+  loadProjectDisplay(defaultProject);
 
-console.log("Priority", newTask.priority);
-*/
+})()
+
+
+
+

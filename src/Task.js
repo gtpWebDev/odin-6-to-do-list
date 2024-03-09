@@ -1,5 +1,4 @@
 
-import { defaultProject } from "./projectAndTaskData.js";
 import Project from "./Project.js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -16,14 +15,14 @@ const prioOptions = [
 
 class Task {
 
-  constructor(name, description, dueDate, priority) {
+  constructor(name, description, dueDate, priority, project) {
     this.name = name;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
     this.taskId = uuidv4()
     this.complete = false;
-    this.project = defaultProject;
+    this.project = project;
   }
 
   toggleComplete() {
@@ -43,12 +42,6 @@ class Task {
 
   }
 
-  addDay() {
-    // add a single day to the due date
-  }
-
-  // Priority getter and setter
-
   get priority() {
     return this._priority;
   }
@@ -60,6 +53,8 @@ class Task {
       throw "This priority is invalid."
     }
   }
+
+  
 
 }
 

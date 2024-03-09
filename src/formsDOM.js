@@ -120,19 +120,18 @@ function loadTaskDialog() {
     // prevent usual behaviour of form submit to send information to a server
     event.preventDefault();
 
+    const addTaskIcon = document.querySelector("#add-task-icon");
+    const currentProject = userProjects.getProjectById(addTaskIcon.dataset.projectId);
+
     const newTask = new Task(
       document.querySelector("#form-task-name").value,
       document.querySelector("#form-task-desc").value,
       document.querySelector("#form-task-date").value,
-      document.querySelector("#form-task-priority").value
+      document.querySelector("#form-task-priority").value,
+      currentProject
     )
 
-    const addTaskIcon = document.querySelector("#add-task-icon");
-    const currentProject = userProjects.getProjectById(addTaskIcon.dataset.projectId);
-    newTask.project = currentProject;
-
     userTasks.addToTaskArray(newTask);
-    console.table(userProjects.getProjectArray())
     resetTaskForm()
     const addTaskDialog = document.querySelector("#task-dialog")
     addTaskDialog.setAttribute("class","dialog-no-display")

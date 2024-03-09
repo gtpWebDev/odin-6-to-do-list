@@ -5,23 +5,9 @@ import EditIcon from "./edit.svg"
 import TickIcon from "./check.svg"
 import CrossIcon from "./close.svg"
 
-
-import { userTasks, defaultProject, userProjects } from "./projectAndTaskData.js";
+import { userTasks, userProjects } from "./projectAndTaskData.js";
 import { friendlyDate } from "./displayFunctions.js";
 import { priorityClassType } from "./displayFunctions.js";
-import { loadProjectDialog, loadTaskDialog } from "./formsDOM.js"
-
-
-
-function pageLoad() {
-
-  // must maintain sequence, modal forms first
-  loadProjectDialog(); 
-  loadTaskDialog();
-  loadSideBar();
-  loadProjectDisplay(defaultProject);
-
-}
 
 
 
@@ -210,7 +196,6 @@ function loadProjectDisplay(selectedProject) {
 
 
 export {
-  pageLoad,
   loadSideBar,
   loadProjectDisplay
 };
