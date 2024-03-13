@@ -1,10 +1,10 @@
-import Project from "./Project"
-import Task from "./Task"
-import { add } from "date-fns"
+import Project from "./Project";
+import Task from "./Task";
+import { add } from "date-fns";
 
-const defaultProject = new Project("Odin-6: To Do List", "Tasks to complete this To Do List tool.");
-const projectDIY = new Project(`DIY jobs`, `Jobs around the house`);
-const projectMisc = new Project(`Miscellaneous`, `Lots of random tasks...`);
+const defaultProject = new Project('Odin-6: To Do List', 'Tasks to complete this To Do List tool.');
+const projectDIY = new Project('DIY jobs', 'Jobs around the house');
+const projectMisc = new Project('Miscellaneous', 'Lots of random tasks...');
 
 const userProjects = (function() {
 

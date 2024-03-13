@@ -7,13 +7,20 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open",
     "build": "webpack",
-    "pushsub": "git subtree push --prefix dist origin gh-pages"
+    "pushsub": "git subtree push --prefix dist origin gh-pages",
+    "lint": "eslint"
   },
   "keywords": [],
   "author": "Glen Pearson",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.10.0",
+    "eslint": "^8.57.0",
+    "eslint-config-semistandard": "^17.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^3.3.4",
     "webpack": "^5.90.3",
@@ -22,6 +29,7 @@
   },
   "dependencies": {
     "date-fns": "^3.3.1",
+    "gtpwebdev-drop-down-list": "^1.2.0",
     "uuid": "^9.0.1"
   }
 }
