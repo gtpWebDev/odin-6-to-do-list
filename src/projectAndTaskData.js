@@ -13,7 +13,7 @@ const odinWeatherApp = new Project(
 
 const userProjects = (function () {
   function initialiseProjectData() {
-    return [defaultProject, projectDIY];
+    return [defaultProject, odinWeatherApp];
   }
 
   let projectArray = initialiseProjectData();
